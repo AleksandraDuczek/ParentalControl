@@ -6,6 +6,13 @@ export default class LoadingScreen extends React.Component {
     componentDidMount() {
         this.timer = setInterval(
             () => firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    user.getIdTokenResult().then(idTokenResult => {
+                        console.log(idTokenResult.claims.parent);
+                        console.log(idTokenResult.claims.child);
+                    })
+                }
+
                 this.props.navigation.navigate( user ? "App" : "Auth")
             }),
             0,

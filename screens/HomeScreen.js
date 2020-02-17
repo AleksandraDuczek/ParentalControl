@@ -25,21 +25,25 @@ export default class HomeScreen extends React.Component {
         if (this.state.role) {
             const fc = firebase.functions();
 
+            debugger;
+
             if (this.state.role === 'parent') {
                 const addParentRole = fc.httpsCallable(('addParentRole'));
                 addParentRole({email: this.state.email}).then((result) =>
-                    console.log(result))
+                    console.log(result));
+                this.props.navigation.navigate("Parent")
             }
             if (this.state.role === 'child') {
                 const addChildRole = fc.httpsCallable(('addChildRole'));
                 addChildRole({email: this.state.email}).then((result) =>
-                    console.log(result))
+                    console.log(result));
+                this.props.navigation.navigate("Child")
             }
             else {
                 console.log("Błąd, nie przyznano żadnej roli")
             }
         }
-    }
+    };
 
     signOut = () => {
         firebase.auth().signOut()
@@ -71,16 +75,6 @@ export default class HomeScreen extends React.Component {
                 <TouchableOpacity style={styles.button}
                                   onPress={this.handleRole}>
                     <Text style={styles.inputTitle}>Zatwierdz</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button}
-                                  onPress={() => this.props.navigation.navigate("Map")}>
-                    <Text style={styles.inputTitle}>Mapka</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.secondButton}
-                                  onPress={this.signOut}>
-                    <Text>Wyloguj</Text>
                 </TouchableOpacity>
 
             </View>

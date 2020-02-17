@@ -9,7 +9,8 @@ import LoadingScreen from './screens/LoadingScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import Map from './screens/Map';
-import ChooseRole from './screens/ChooseRole';
+import Functionalities from './roles/parent/Functionalities';
+import Func from './roles/child/Func';
 
 var firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
@@ -28,6 +29,8 @@ firebase.initializeApp(firebaseConfig);
 const AppStack = createStackNavigator({
   Home: HomeScreen,
   Map: Map,
+  Parent: Functionalities,
+  Child: Func,
 });
 
 const AuthStack = createStackNavigator({
@@ -39,7 +42,7 @@ export default createAppContainer(
     createSwitchNavigator( {
       Loading: LoadingScreen,
       App: AppStack,
-      Auth: AuthStack
+      Auth: AuthStack,
     },
     {
       initialRouteName: "Loading",

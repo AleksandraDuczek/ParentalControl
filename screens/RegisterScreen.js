@@ -76,10 +76,7 @@ export default class RegisterScreen extends React.Component {
                     </View>
 
                     <Text style={styles.error}>
-                        {
-                            this.state.errorMessage
-                            && <Text style={styles.error}>Kurwa z moze znany {this.state.errorMessage}</Text>
-                        }
+                        { this.state.errorMessage && <Text style={styles.error}>Błąd</Text> }
                     </Text>
 
                     <TouchableOpacity style={styles.button}
