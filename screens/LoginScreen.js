@@ -62,7 +62,9 @@ export default class LoginScreen extends React.Component {
                     <View style={styles.register}>
                         <Text style={{color: "grey"}}>Nie posiadam konta</Text>
                         <TouchableOpacity style={styles.secondButton}
-                                          onPress={() => this.props.navigation.navigate("Register")}>
+                                          onPress={() => {
+                                              this.props.navigation.navigate("Register")
+                                          }}>
                             <Text style={styles.inputTitle}>Rejestracja</Text>
                         </TouchableOpacity>
                     </View>

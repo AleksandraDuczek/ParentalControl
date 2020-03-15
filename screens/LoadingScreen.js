@@ -4,18 +4,9 @@ import * as firebase from 'firebase';
 
 export default class LoadingScreen extends React.Component {
     componentDidMount() {
-        this.timer = setInterval(
-            () => firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    user.getIdTokenResult().then(idTokenResult => {
-                        console.log(idTokenResult.claims.parent);
-                        console.log(idTokenResult.claims.child);
-                    })
-                }
-
-                this.props.navigation.navigate( user ? "App" : "Auth")
-            }),
-            0,
+            firebase.auth().onAuthStateChanged(user => {
+                user ? this.props.navigation.navigate("App") : this.props.navigation.navigate("Auth");
+            },
         );
     }
 

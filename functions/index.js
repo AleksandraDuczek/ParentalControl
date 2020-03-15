@@ -19,6 +19,7 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
 
 exports.addChildRole = functions.https.onCall((data, context) => {
     //get user and add custom claim (admin)
+    debugger;
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             child: true,
@@ -34,6 +35,7 @@ exports.addChildRole = functions.https.onCall((data, context) => {
 
 exports.addParentRole = functions.https.onCall((data, context) => {
     //get user and add custom claim (admin)
+    debugger;
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             parent: true,

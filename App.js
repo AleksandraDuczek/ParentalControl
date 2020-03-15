@@ -7,10 +7,11 @@ import {
 import LoginScreen from './screens/LoginScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
+import Direction from './screens/Direction';
 import Map from './screens/Map';
 import Functionalities from './roles/parent/Functionalities';
 import Func from './roles/child/Func';
+import ChooseRole from './screens/ChooseRole';
 
 var firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
@@ -27,14 +28,21 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const AppStack = createStackNavigator({
-  Home: HomeScreen,
-  Map: Map,
-  Parent: Functionalities,
-  Child: Func,
+    Direction: Direction,
+    Parent: Functionalities,
+    Child: Func,
+    Map: Map,
+});
+
+const RoleStack = createStackNavigator({
+    Parent: Functionalities,
+    Child: Func,
+    Map: Map,
 });
 
 const AuthStack = createStackNavigator({
   Login: LoginScreen,
+  ChooseRole: ChooseRole,
   Register: RegisterScreen,
 });
 

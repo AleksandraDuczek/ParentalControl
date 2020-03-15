@@ -16,16 +16,8 @@ export default class RegisterScreen extends React.Component {
     handleRegistration = () => {
         const { email, password, name, surname, errorMessage, uid } = this.state;
 
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                return userCredentials
-                    .user.updateProfile({
-                        displayName: name + surname,
-                    })
-            })
-            .catch(errorMessage => this.setState({errorMessage}));
+        this.props.navigation
+            .navigate("ChooseRole", {email, password, name, surname, errorMessage, uid });
     };
 
     render() {
@@ -76,7 +68,8 @@ export default class RegisterScreen extends React.Component {
                     </View>
 
                     <Text style={styles.error}>
-                        { this.state.errorMessage && <Text style={styles.error}>Błąd</Text> }
+                        { this.state.errorMessage && <Text style={styles.error}>
+                           blad </Text> }
                     </Text>
 
                     <TouchableOpacity style={styles.button}
