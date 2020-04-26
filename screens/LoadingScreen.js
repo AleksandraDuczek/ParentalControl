@@ -3,11 +3,19 @@ import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import * as firebase from 'firebase';
 
 export default class LoadingScreen extends React.Component {
+		constructor(props) {
+			super(props);
+			this.navigate = this.navigate.bind(this);
+		}
+
     componentDidMount() {
-	    firebase.auth().currentUser;
-            firebase.auth().currentUser
-	            ? this.props.navigation.navigate("App")
-	            : this.props.navigation.navigate("Auth");
+	    setTimeout(this.navigate, 3000)
+    }
+
+    navigate() {
+	    firebase.auth().currentUser
+		    ? this.props.navigation.navigate("App")
+		    : this.props.navigation.navigate("Auth");
     }
 
     render() {
