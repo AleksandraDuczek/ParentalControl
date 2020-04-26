@@ -28,7 +28,7 @@ export default class RegisterScreen extends React.Component {
                     <View>
                         <Text style={styles.inputTitle}> Imię </Text>
                         <TextInput style={styles.input}
-                                   autoCapitalize="none"
+                                   autoCapitalize="words"
                                    onChangeText={name => this.setState({name})}
                                    value={this.state.name}>
                         </TextInput>
@@ -37,7 +37,7 @@ export default class RegisterScreen extends React.Component {
                     <View>
                         <Text style={styles.inputTitle}> Nazwisko </Text>
                         <TextInput style={styles.input}
-                                   autoCapitalize="none"
+                                   autoCapitalize="words"
                                    onChangeText={surname => this.setState({surname})}
                                    value={this.state.surname}>
                         </TextInput>
@@ -48,7 +48,7 @@ export default class RegisterScreen extends React.Component {
                             Adres email
                         </Text>
                         <TextInput style={styles.input}
-                                   autoCapitalize="none"
+                                   autoCapitalize="words"
                                    onChangeText={email => this.setState({email})}
                                    value={this.state.email}>
                         </TextInput>
@@ -60,7 +60,7 @@ export default class RegisterScreen extends React.Component {
                         </Text>
                         <TextInput style={styles.input}
                                    secureTextEntry
-                                   autoCapitalize="none"
+                                   autoCapitalize="words"
                                    onChangeText={password => this.setState({password})}
                                    value={this.state.password}>
                         </TextInput>

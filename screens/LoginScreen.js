@@ -13,31 +13,13 @@ export default class LoginScreen extends React.Component {
         };
     }
 
-    componentDidMount() {
-        let params;
-        this.props.navigation.state.params
-          ? params = this.props.navigation.state.params
-          : params = null;
-        if (params !== null) {
-            this.setState({
-                logOut: params.logOut,
-            });
-        }
-        if (this.state.logOut === true) {
-            firebase.auth().signOut()
-              .then(() => {
-                  console.log("Signed out")
-              });
-        }
-    }
-
     handleLogin = () => {
         const { email, password } = this.state;
 
         firebase.auth().signInWithEmailAndPassword(email, password)
             .catch(errorMessage => this.setState({errorMessage}));
-        this.props.navigation
-          .navigate("Direction", { email, password });
+
+        this.props.navigation.navigate("Direction", { email, password });
     };
 
     render() {
@@ -53,9 +35,9 @@ export default class LoginScreen extends React.Component {
                             Adres email
                         </Text>
                         <TextInput style={styles.input}
-                                   autoCapitalize="none"
-                        onChangeText={email => this.setState({email})}
-                        value={this.state.email}>
+                                   autoCapitalize="words"
+                                   onChangeText={ email => this.setState({email})}
+                                   value={this.state.email}>
                         </TextInput>
                     </View>
 
@@ -65,31 +47,36 @@ export default class LoginScreen extends React.Component {
                         </Text>
                         <TextInput style={styles.input}
                                    secureTextEntry
-                                   autoCapitalize="none"
+                                   autoCapitalize="words"
                                    onChangeText={password => this.setState({password})}
                                    value={this.state.password}>
                         </TextInput>
                     </View>
 
                     <Text style={styles.error}>
-                        {
-                            this.state.errorMessage
-                            && <Text style={styles.error}>Błędny login lub hasło</Text>
+                        { this.state.errorMessage &&
+                            <Text style={styles.error}>
+                                Błędny login lub hasło
+                            </Text>
                         }
                     </Text>
 
                     <TouchableOpacity style={styles.button}
                                       onPress={this.handleLogin}>
-                    <Text style={styles.inputTitle}>Zaloguj się</Text>
+                    <Text style={styles.inputTitle}>
+                        Zaloguj się
+                    </Text>
                     </TouchableOpacity>
 
                     <View style={styles.register}>
-                        <Text style={{color: "grey"}}>Nie posiadam konta</Text>
+                        <Text style={{color: "grey"}}>
+                            Nie posiadam konta
+                        </Text>
                         <TouchableOpacity style={styles.secondButton}
-                                          onPress={() => {
-                                              this.props.navigation.navigate("Register")
-                                          }}>
-                            <Text style={styles.inputTitle}>Rejestracja</Text>
+                                          onPress={() => { this.props.navigation.navigate("Register")}}>
+                            <Text style={styles.inputTitle}>
+                                Rejestracja
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
