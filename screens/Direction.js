@@ -20,12 +20,10 @@ export default class Direction extends React.Component {
         this.props.navigation.navigate("Child", { email: this.state.email });
     }
 
-    goToChooseRole() {
-        this.props.navigation.navigate("ChooseRole", { email: this.state.email });
-    }
-
     componentDidMount() {
+        debugger;
         const { email } = firebase.auth().currentUser;
+        console.log(firebase.auth().currentUser);
         this.setState({ email });
 
         let params;
@@ -41,7 +39,7 @@ export default class Direction extends React.Component {
             role: params.role,
         });
 
-        if (params === null) {
+        if (!params.role) {
             firebase.auth().currentUser.getIdTokenResult()
               .then((idTokenResult) => {
                   if (idTokenResult.claims.parent || idTokenResult.claims.child) {

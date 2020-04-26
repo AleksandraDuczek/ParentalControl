@@ -44,36 +44,23 @@ class ChooseRole extends React.Component {
         if (this.state.role) {
             const email = this.state.email;
             const password = this.state.password;
+            let hasCanceled = false;
 
-            if (this.state.role === 'parent') {
-                firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(() => {
-                        this.handleRegistration();
-                    })
-                    .catch(errorMessage => {
-                        console.log(errorMessage)
-                    });
-                return;
-            }
-            if (this.state.role === 'child') {
-                const addChildRole = fc.httpsCallable('addChildRole');
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    if (!hasCanceled) {
+                        this.handleRegistration = this.handleRegistration.bind(this);
+                    }
+                })
+                .catch(errorMessage => {
+                    hasCanceled = true;
+                    console.log(errorMessage)
+                });
 
-                firebase
-                    .auth()
-                    .createUserWithEmailAndPassword(email, password)
-                    .then(() => {
-                        addChildRole({email: this.state.email})
-                            .then((result) => {
-                                this.setState({role: result});
-                            }
-                    );
-                    })
-                    .catch(errorMessage => {
-                        console.log(errorMessage)
-                    });
-                return;
+            if (firebase.auth().currentUser) {
+                this.handleRegistration();
             }
         }
     };
@@ -85,7 +72,6 @@ class ChooseRole extends React.Component {
             const addParentRole = fc.httpsCallable('addParentRole');
             addParentRole({email: this.state.email})
               .then((result) => {
-                  debugger;
                   const { email, password, name, surname, errorMessage, role } = this.state;
                   this.setState({role: result});
                   this.props.navigation
@@ -94,6 +80,19 @@ class ChooseRole extends React.Component {
               .catch(errorMessage => {
                   console.log(errorMessage)
               });
+        }
+
+        if (this.state.role === 'child') {
+            const addChildRole = fc.httpsCallable('addChildRole');
+              addChildRole({email: this.state.email})
+                .then((result) => {
+                    const { email, password, name, surname, errorMessage, role } = this.state;
+                    this.setState({role: result});
+                    this.props.navigation
+                      .navigate("Direction", {email, password, name, surname, errorMessage, role });
+                  }
+                );
+            return;
         }
     };
 
