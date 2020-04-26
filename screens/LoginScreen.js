@@ -35,7 +35,7 @@ export default class LoginScreen extends React.Component {
                             Adres email
                         </Text>
                         <TextInput style={styles.input}
-                                   autoCapitalize="words"
+                                   autoCapitalize="none"
                                    onChangeText={ email => this.setState({email})}
                                    value={this.state.email}>
                         </TextInput>
@@ -47,7 +47,7 @@ export default class LoginScreen extends React.Component {
                         </Text>
                         <TextInput style={styles.input}
                                    secureTextEntry
-                                   autoCapitalize="words"
+                                   autoCapitalize="none"
                                    onChangeText={password => this.setState({password})}
                                    value={this.state.password}>
                         </TextInput>

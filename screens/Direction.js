@@ -3,27 +3,34 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import * as firebase from 'firebase';
 
 export default class Direction extends React.Component {
-    state = {
-        name: "",
-        email: "",
-        role: "",
-        displayName: "",
-        surname: "",
-        errorMessage: "",
-        uid: 0,
-    };
+    constructor(props) {
+        super(props);
+        this.state = 	{
+            name: "",
+            email: "",
+            role: "",
+            displayName: "",
+            surname: "",
+            errorMessage: "",
+            uid: 0,
+        };
+        this.signOut = this.signOut.bind(this);
+    }
 
     goToParentComponent() {
-        this.props.navigation.navigate("Parent", { email: this.state.email });
+        if (!this.state.role) this.state.role = 'parent';
+        const { email, role } = this.state;
+        this.props.navigation.navigate("Parent", { email, role });
     }
+
     goToChildComponent() {
-        this.props.navigation.navigate("Child", { email: this.state.email });
+        if (!this.state.role) this.state.role = 'child';
+        const { email,  role } = this.state;
+        this.props.navigation.navigate("Child", { email, role });
     }
 
     componentDidMount() {
-        debugger;
         const { email } = firebase.auth().currentUser;
-        console.log(firebase.auth().currentUser);
         this.setState({ email });
 
         let params;
@@ -42,6 +49,7 @@ export default class Direction extends React.Component {
         if (!params.role) {
             firebase.auth().currentUser.getIdTokenResult()
               .then((idTokenResult) => {
+                  debugger;
                   if (idTokenResult.claims.parent || idTokenResult.claims.child) {
                       idTokenResult.claims.parent
                         ? this.goToParentComponent()
@@ -58,23 +66,26 @@ export default class Direction extends React.Component {
         else {
             if (params.role === 'parent') {
                 this.goToParentComponent()
-            } else {
+            }
+            if (params.role === 'parent') {
                 this.goToChildComponent();
             }
         }
     }
 
-    signOut = () => {
+    signOut() {
         this.props.navigation.navigate("Auth", { logOut: true });
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <Text></Text>
+                <Text>Komponent na chwile, do usuniecia</Text>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
-                    <Text style={styles.inputTitle}>Wyloguj</Text>
+                    <Text style={styles.inputTitle}>
+                        Wyloguj
+                    </Text>
                 </TouchableOpacity>
             </View>
         )

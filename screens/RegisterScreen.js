@@ -16,17 +16,18 @@ export default class RegisterScreen extends React.Component {
         const { email, password, name, surname, errorMessage, uid } = this.state;
 
         this.props.navigation
-            .navigate("ChooseRole", {email, password, name, surname, errorMessage, uid });
+            .navigate("ChooseRole", { email, password, name, surname, errorMessage, uid });
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.greeting}> Zarejestruj się </Text>
-
                 <View style={styles.form}>
                     <View>
-                        <Text style={styles.inputTitle}> Imię </Text>
+                        <Text style={styles.inputTitle}>
+	                        Imię
+                        </Text>
                         <TextInput style={styles.input}
                                    autoCapitalize="words"
                                    onChangeText={name => this.setState({name})}
@@ -35,7 +36,9 @@ export default class RegisterScreen extends React.Component {
                     </View>
 
                     <View>
-                        <Text style={styles.inputTitle}> Nazwisko </Text>
+                        <Text style={styles.inputTitle}>
+	                        Nazwisko
+                        </Text>
                         <TextInput style={styles.input}
                                    autoCapitalize="words"
                                    onChangeText={surname => this.setState({surname})}
@@ -67,13 +70,18 @@ export default class RegisterScreen extends React.Component {
                     </View>
 
                     <Text style={styles.error}>
-                        { this.state.errorMessage && <Text style={styles.error}>
-                           blad </Text> }
+                        { this.state.errorMessage &&
+                        <Text style={styles.error}>
+	                        Wystąpił błąd, przepraszamy
+                        </Text>
+                        }
                     </Text>
 
                     <TouchableOpacity style={styles.button}
                                       onPress={this.handleRegistration}>
-                        <Text style={styles.inputTitle}>Dalej</Text>
+                        <Text style={styles.inputTitle}>
+	                        Dalej
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>

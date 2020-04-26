@@ -1,22 +1,25 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
 import * as firebase from "firebase";
+import Common from '../Common';
 
 export default class Func extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = 	{
             email: "",
+            role: "",
         };
         this.signOut = this.signOut.bind(this);
     }
 
     componentDidMount() {
-        if (this.props.navigation.state.params) {
+        const params = this.props.navigation.state.params;
+        if (params) {
             this.setState({
-                email: this.props.navigation.state.params.email,
+                email: params.email,
+                role: params.role,
             });
-            return;
         }
         const { email } = firebase.auth().currentUser;
         this.setState({ email });
@@ -29,11 +32,13 @@ export default class Func extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Czesc, jestes dzieckiem.</Text>
-                <Text>{this.state.email}</Text>
+                <Text>Rola: {this.state.role}</Text>
+                <Text>Email: {this.state.email}</Text>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
-                    <Text style={styles.inputTitle}>Wyloguj</Text>
+                    <Text style={styles.inputTitle}>
+                        Wyloguj
+                    </Text>
                 </TouchableOpacity>
             </View>
         );

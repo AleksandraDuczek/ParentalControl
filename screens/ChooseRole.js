@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
 import * as firebase from "firebase";
 
-class ChooseRole extends React.Component {
+export default class ChooseRole extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,26 +18,21 @@ class ChooseRole extends React.Component {
     }
 
     componentDidMount() {
-        let params;
+       let params;
        this.props.navigation.state.params
            ? params = this.props.navigation.state.params
-           : params = {
-           email: 'dupa@gmail.com',
-           password: 'dupa',
-           uid: '123',
-           name: 'Czy',
-           surname: 'Coś',
-           errorMessage: null,
-           };
+           : params = null;
 
-        this.setState({
-            email: params.email,
-            password: params.password,
-            uid: params.uid,
-            name: params.name,
-            surname: params.surname,
-            errorMessage: null,
-        });
+       if (params === null) return;
+
+       this.setState({
+           email: params.email,
+           password: params.password,
+           uid: params.uid,
+           name: params.name,
+           surname: params.surname,
+           errorMessage: null,
+       });
     };
 
     handleRole() {
@@ -56,7 +51,7 @@ class ChooseRole extends React.Component {
                 })
                 .catch(errorMessage => {
                     hasCanceled = true;
-                    console.log(errorMessage)
+                    console.log(errorMessage);
                 });
 
             if (firebase.auth().currentUser) {
@@ -67,62 +62,58 @@ class ChooseRole extends React.Component {
 
     handleRegistration() {
         const fc = firebase.functions();
+        const { email, password, name, surname, errorMessage, role } = this.state;
 
         if (this.state.role === 'parent') {
             const addParentRole = fc.httpsCallable('addParentRole');
             addParentRole({email: this.state.email})
               .then((result) => {
-                  const { email, password, name, surname, errorMessage, role } = this.state;
                   this.setState({role: result});
                   this.props.navigation
                     .navigate("Direction", {email, password, name, surname, errorMessage, role });
               })
-              .catch(errorMessage => {
-                  console.log(errorMessage)
-              });
         }
 
         if (this.state.role === 'child') {
             const addChildRole = fc.httpsCallable('addChildRole');
               addChildRole({email: this.state.email})
                 .then((result) => {
-                    const { email, password, name, surname, errorMessage, role } = this.state;
                     this.setState({role: result});
                     this.props.navigation
                       .navigate("Direction", {email, password, name, surname, errorMessage, role });
-                  }
-                );
-            return;
+                  });
         }
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Witaj, {this.state.displayName} </Text>
+                <Text style={styles.text}>
+                    Witaj, {this.state.displayName}
+                </Text>
 
                 <Text style={styles.inputTitle}>
                     Wybierz rolę
                 </Text>
+
                 <Picker style={styles.picker}
                         selectedValue={this.state.role}
                         itemStyle={{height: 55}}
-                        onValueChange={(itemValue) =>
-                            this.setState({role: itemValue})}>
+                        onValueChange={(itemValue) => this.setState({role: itemValue})}>
                     <Picker.Item label="rodzic" value="parent" />
                     <Picker.Item label="dziecko" value="child" />
                 </Picker>
+
                 <TouchableOpacity style={styles.button}
                                   onPress={this.handleRole}>
-                    <Text style={styles.inputTitle}>Zatwierdz</Text>
+                    <Text style={styles.inputTitle}>
+                        Zatwierdz
+                    </Text>
                 </TouchableOpacity>
-
             </View>
         );
     }
 }
-
-export default ChooseRole;
 
 const styles = StyleSheet.create({
     container: {
