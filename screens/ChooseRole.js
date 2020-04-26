@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
 import * as firebase from "firebase";
 
-export default class ChooseRole extends React.Component {
+class ChooseRole extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,7 +13,8 @@ export default class ChooseRole extends React.Component {
             surname: "",
             role: "parent",
             errorMessage: null,
-        }
+        };
+        this.handleRole = this.handleRole.bind(this);
     }
 
     componentDidMount() {
@@ -39,24 +40,17 @@ export default class ChooseRole extends React.Component {
         });
     };
 
-    handleRole = () => {
-        debugger;
+    handleRole() {
         if (this.state.role) {
-            const fc = firebase.functions();
             const email = this.state.email;
             const password = this.state.password;
-            debugger;
 
             if (this.state.role === 'parent') {
                 firebase
                     .auth()
                     .createUserWithEmailAndPassword(email, password)
                     .then(() => {
-                        debugger;
-                        const addParentRole = fc.httpsCallable(('addParentRole'));
-                        addParentRole({email: this.state.email})
-                            .then((result) =>
-                            this.setState({role: result}))
+                        this.handleRegistration();
                     })
                     .catch(errorMessage => {
                         console.log(errorMessage)
@@ -64,21 +58,19 @@ export default class ChooseRole extends React.Component {
                 return;
             }
             if (this.state.role === 'child') {
+                const addChildRole = fc.httpsCallable('addChildRole');
+
                 firebase
                     .auth()
                     .createUserWithEmailAndPassword(email, password)
                     .then(() => {
-                        debugger;
-                        const addChildRole = fc.httpsCallable(('addChildRole'));
                         addChildRole({email: this.state.email})
                             .then((result) => {
-                                this.setState({role: result})
-                                console.log("Sukces?")
+                                this.setState({role: result});
                             }
                     );
                     })
                     .catch(errorMessage => {
-                        debugger;
                         console.log(errorMessage)
                     });
                 return;
@@ -86,13 +78,23 @@ export default class ChooseRole extends React.Component {
         }
     };
 
-    handleRegistration = () => {
-        const { email, password, name, surname, errorMessage, role } = this.state;
+    handleRegistration() {
+        const fc = firebase.functions();
 
-        debugger;
-
-        this.props.navigation
-            .navigate("Direction", {email, password, name, surname, errorMessage, role });
+        if (this.state.role === 'parent') {
+            const addParentRole = fc.httpsCallable('addParentRole');
+            addParentRole({email: this.state.email})
+              .then((result) => {
+                  debugger;
+                  const { email, password, name, surname, errorMessage, role } = this.state;
+                  this.setState({role: result});
+                  this.props.navigation
+                    .navigate("Direction", {email, password, name, surname, errorMessage, role });
+              })
+              .catch(errorMessage => {
+                  console.log(errorMessage)
+              });
+        }
     };
 
     render() {
@@ -120,6 +122,8 @@ export default class ChooseRole extends React.Component {
         );
     }
 }
+
+export default ChooseRole;
 
 const styles = StyleSheet.create({
     container: {

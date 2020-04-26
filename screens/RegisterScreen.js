@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import * as firebase from "firebase";
 import "firebase/functions";
 
 export default class RegisterScreen extends React.Component {

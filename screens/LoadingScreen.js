@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import * as firebase from 'firebase';
 
 export default class LoadingScreen extends React.Component {
     componentDidMount() {
-            firebase.auth().onAuthStateChanged(user => {
-                user ? this.props.navigation.navigate("App") : this.props.navigation.navigate("Auth");
-            },
-        );
+	    firebase.auth().currentUser;
+            firebase.auth().currentUser
+	            ? this.props.navigation.navigate("App")
+	            : this.props.navigation.navigate("Auth");
     }
 
     render() {

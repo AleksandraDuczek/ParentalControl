@@ -3,17 +3,41 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import * as firebase from "firebase";
 
 export default class LoginScreen extends React.Component {
-    state = {
-        email: "",
-        password: "",
-        errorMessage: null,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: "",
+            errorMessage: null,
+            logOut: false,
+        };
+    }
+
+    componentDidMount() {
+        let params;
+        this.props.navigation.state.params
+          ? params = this.props.navigation.state.params
+          : params = null;
+        if (params !== null) {
+            this.setState({
+                logOut: params.logOut,
+            });
+        }
+        if (this.state.logOut === true) {
+            firebase.auth().signOut()
+              .then(() => {
+                  console.log("Signed out")
+              });
+        }
+    }
 
     handleLogin = () => {
         const { email, password } = this.state;
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .catch(errorMessage => this.setState({errorMessage}))
+            .catch(errorMessage => this.setState({errorMessage}));
+        this.props.navigation
+          .navigate("Direction", { email, password });
     };
 
     render() {

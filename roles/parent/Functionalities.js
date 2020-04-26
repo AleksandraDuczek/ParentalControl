@@ -7,7 +7,8 @@ export default class Functionalities extends React.Component {
         super(props);
         this.state = {
             email: "",
-        }
+        };
+        this.signOut = this.signOut.bind(this);
     }
 
     componentDidMount() {
@@ -21,12 +22,8 @@ export default class Functionalities extends React.Component {
         this.setState({ email });
     };
 
-    signOut = () => {
-
-        firebase.auth().signOut()
-            .then(() => {
-                console.log("Signed out")
-            });
+    signOut() {
+        this.props.navigation.navigate("Auth", { logOut: true });
     };
 
     render() {

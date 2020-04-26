@@ -13,7 +13,7 @@ import Functionalities from './roles/parent/Functionalities';
 import Func from './roles/child/Func';
 import ChooseRole from './screens/ChooseRole';
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
   authDomain: "project-cd059.firebaseapp.com",
   databaseURL: "https://project-cd059.firebaseio.com",
@@ -29,12 +29,6 @@ firebase.initializeApp(firebaseConfig);
 
 const AppStack = createStackNavigator({
     Direction: Direction,
-    Parent: Functionalities,
-    Child: Func,
-    Map: Map,
-});
-
-const RoleStack = createStackNavigator({
     Parent: Functionalities,
     Child: Func,
     Map: Map,
