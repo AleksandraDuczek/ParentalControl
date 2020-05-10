@@ -13,7 +13,6 @@ module.exports = function setCustomClaims(auth, uid) {
 };
 
 exports.addAdminRole = functions.https.onCall((data, context) => {
-    //get user and add custom claim (admin)
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             admin: true,
@@ -28,7 +27,6 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
 });
 
 exports.addFamilyIdToParent = functions.https.onCall((data, context) => {
-    //get user and add custom claim (admin)
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             familyId: Math.random(),
@@ -43,7 +41,6 @@ exports.addFamilyIdToParent = functions.https.onCall((data, context) => {
 });
 
 exports.addFamilyIdToChild = functions.https.onCall((data, context) => {
-    //get user and add custom claim (admin)
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             familyId: context,
@@ -58,8 +55,6 @@ exports.addFamilyIdToChild = functions.https.onCall((data, context) => {
 });
 
 exports.addParentRole = functions.https.onCall((data) => {
-    //get user and add custom claim (admin)
-    debugger;
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             parent: true,
