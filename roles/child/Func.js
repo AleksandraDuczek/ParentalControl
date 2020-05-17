@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import * as firebase from "firebase";
-import Common from '../Common';
 
 export default class Func extends React.Component {
     constructor(props) {
@@ -34,6 +33,7 @@ export default class Func extends React.Component {
             <View style={styles.container}>
                 <Text>Rola: {this.state.role}</Text>
                 <Text>Email: {this.state.email}</Text>
+                <Text> Wpisz ID rodzica: </Text>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
                     <Text style={styles.inputTitle}>

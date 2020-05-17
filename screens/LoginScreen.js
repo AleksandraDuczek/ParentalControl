@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import * as firebase from "firebase";
 
 export default class LoginScreen extends React.Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -11,15 +12,24 @@ export default class LoginScreen extends React.Component {
             errorMessage: null,
             logOut: false,
         };
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
-    handleLogin = () => {
-        const { email, password } = this.state;
+    componentDidMount() {
+        this._isMounted = true;
+    }
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .catch(errorMessage => this.setState({errorMessage}));
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
-        this.props.navigation.navigate("Direction", { email, password });
+    handleLogin() {
+        if (this._isMounted) {
+            const { email, password } = this.state;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+              .then(() => this.props.navigation.navigate("Direction", { email, password }))
+              .catch(errorMessage => this.setState({errorMessage}));
+        }
     };
 
     render() {

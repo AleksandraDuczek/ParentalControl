@@ -26,20 +26,6 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
     });
 });
 
-exports.addFamilyIdToParent = functions.https.onCall((data, context) => {
-    return admin.auth().getUserByEmail(data.email).then(user => {
-        return admin.auth().setCustomUserClaims(user.uid, {
-            familyId: Math.random(),
-        });
-    }).then(() => {
-        return {
-            message: `Success! Add family ID to parent`
-        }
-    }).catch(err => {
-        return err;
-    });
-});
-
 exports.addFamilyIdToChild = functions.https.onCall((data, context) => {
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {

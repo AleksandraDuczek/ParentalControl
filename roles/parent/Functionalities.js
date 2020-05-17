@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as firebase from "firebase";
-import Common from '../Common';
 
 export default class Functionalities extends React.Component {
     constructor(props) {
@@ -9,6 +8,7 @@ export default class Functionalities extends React.Component {
         this.state = 	{
             email: "",
             role: "",
+            familyId: 0,
         };
         this.signOut = this.signOut.bind(this);
     }
@@ -19,6 +19,7 @@ export default class Functionalities extends React.Component {
             this.setState({
                 email: params.email,
                 role: params.role,
+                familyId: params.familyId,
             });
         }
         const { email } = firebase.auth().currentUser;
@@ -34,6 +35,10 @@ export default class Functionalities extends React.Component {
             <View style={styles.container}>
                 <Text>Rola: {this.state.role}</Text>
                 <Text>Email: {this.state.email}</Text>
+                <Text>
+                    Aby móc korzystać z pełni funkcjonalności powiąż konto dziecka z id: {this.state.familyId}
+                </Text>
+                <Text>Odśwież</Text>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
                     <Text style={styles.inputTitle}>

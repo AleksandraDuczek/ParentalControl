@@ -13,20 +13,18 @@ export default class Direction extends React.Component {
             surname: "",
             errorMessage: "",
             uid: 0,
+            familyId: 0,
         };
         this.signOut = this.signOut.bind(this);
     }
 
-    goToParentComponent() {
-        if (!this.state.role) this.state.role = 'parent';
-        const { email, role } = this.state;
-        this.props.navigation.navigate("Parent", { email, role });
+    goToParentComponent(email, role, familyId) {
+        this.props.navigation.navigate("Parent", { email, role, familyId });
     }
 
     goToChildComponent() {
-        if (!this.state.role) this.state.role = 'child';
-        const { email,  role } = this.state;
-        this.props.navigation.navigate("Child", { email, role });
+        const { email,  role, familyId } = this.state;
+        this.props.navigation.navigate("Child", { email, role, familyId });
     }
 
     componentDidMount() {
@@ -44,12 +42,12 @@ export default class Direction extends React.Component {
             name: params.name,
             surname: params.surname,
             role: params.role,
+            familyId: params.familyId,
         });
 
         if (!params.role) {
             firebase.auth().currentUser.getIdTokenResult()
               .then((idTokenResult) => {
-                  debugger;
                   if (idTokenResult.claims.parent || idTokenResult.claims.child) {
                       idTokenResult.claims.parent
                         ? this.goToParentComponent()
@@ -64,10 +62,12 @@ export default class Direction extends React.Component {
               })
         }
         else {
+            debugger;
             if (params.role === 'parent') {
-                this.goToParentComponent()
+                debugger;
+                this.goToParentComponent(params.email, params.role, params.familyId);
             }
-            if (params.role === 'parent') {
+            if (params.role === 'child') {
                 this.goToChildComponent();
             }
         }

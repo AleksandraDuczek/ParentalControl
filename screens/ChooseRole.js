@@ -12,7 +12,9 @@ export default class ChooseRole extends React.Component {
             name: "",
             surname: "",
             role: "parent",
+            familyId: 0,
             errorMessage: null,
+            waitingFlag: false,
         };
         this.handleRole = this.handleRole.bind(this);
     }
@@ -31,7 +33,9 @@ export default class ChooseRole extends React.Component {
            uid: params.uid,
            name: params.name,
            surname: params.surname,
+           familyId: 0,
            errorMessage: null,
+           waitingFlag: false,
        });
     };
 
@@ -40,6 +44,8 @@ export default class ChooseRole extends React.Component {
             const email = this.state.email;
             const password = this.state.password;
             let hasCanceled = false;
+
+            this.state.familyId = this.createId(email, this.state.name, this.state.surname);
 
             firebase
                 .auth()
@@ -60,25 +66,32 @@ export default class ChooseRole extends React.Component {
         }
     };
 
+    createId(email, name, surname) {
+        const a = email.charCodeAt(0);
+        const b = name.charCodeAt(1);
+        const c = surname.charCodeAt(2);
+        return Number(a+b+c);
+    }
+
     handleRegistration() {
         const fc = firebase.functions();
-        const { email, password, name, surname, errorMessage, role } = this.state;
+        const { email, password, name, surname, errorMessage, role, familyId } = this.state;
 
         if (this.state.role === 'parent') {
             const addParentRole = fc.httpsCallable('addParentRole');
             addParentRole({email: this.state.email})
               .then((result) => {
-                  this.setState({role: result});
+                  console.log(result);
                   this.props.navigation
-                    .navigate("Direction", {email, password, name, surname, errorMessage, role });
-              })
+                    .navigate("Direction", {email, password, name, surname, errorMessage, role, familyId });
+              });
         }
 
         if (this.state.role === 'child') {
             const addChildRole = fc.httpsCallable('addChildRole');
               addChildRole({email: this.state.email})
                 .then((result) => {
-                    this.setState({role: result});
+                    console.log(result);
                     this.props.navigation
                       .navigate("Direction", {email, password, name, surname, errorMessage, role });
                   });
