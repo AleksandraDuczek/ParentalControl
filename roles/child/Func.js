@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import * as firebase from "firebase";
 
 export default class Func extends React.Component {
@@ -8,8 +8,10 @@ export default class Func extends React.Component {
         this.state = 	{
             email: "",
             role: "",
+            familyId: 0,
         };
         this.signOut = this.signOut.bind(this);
+        this.checkId = this.checkId.bind(this);
     }
 
     componentDidMount() {
@@ -24,6 +26,11 @@ export default class Func extends React.Component {
         this.setState({ email });
     };
 
+    checkId() {
+        console.log(this.state.familyId);
+        // check id in data base
+    }
+
     signOut() {
         this.props.navigation.navigate("Auth", { logOut: true });
     };
@@ -34,6 +41,17 @@ export default class Func extends React.Component {
                 <Text>Rola: {this.state.role}</Text>
                 <Text>Email: {this.state.email}</Text>
                 <Text> Wpisz ID rodzica: </Text>
+                <TextInput style={styles.input}
+                           autoCapitalize="none"
+                           onChangeText={familyId => this.setState({familyId})}
+                           value={this.state.familyId}>
+                </TextInput>
+                <TouchableOpacity style={styles.button}
+                                  onPress={this.checkId}>
+                    <Text style={styles.inputTitle}>
+                        Przypisz id
+                    </Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
                     <Text style={styles.inputTitle}>
@@ -60,5 +78,12 @@ const styles = StyleSheet.create({
         width: 90,
         alignItems: "center",
         textAlign: "center"
+    },
+    inputTitle: {
+        marginTop: 10,
+        color: "grey",
+        fontSize: 10,
+        fontWeight: "600",
+        textTransform: "uppercase",
     },
 });

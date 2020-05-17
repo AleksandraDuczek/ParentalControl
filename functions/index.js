@@ -40,6 +40,20 @@ exports.addFamilyIdToChild = functions.https.onCall((data, context) => {
     });
 });
 
+exports.addFamilyIdToParent = functions.https.onCall((data) => {
+    return admin.auth().getUserByEmail(data.email).then(user => {
+        return admin.auth().setCustomUserClaims(user.uid, {
+            familyId: data.familyId,
+        });
+    }).then(() => {
+        return {
+            message: `Success! Add family ID to parent`
+        }
+    }).catch(err => {
+        return err;
+    });
+});
+
 exports.addParentRole = functions.https.onCall((data) => {
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {

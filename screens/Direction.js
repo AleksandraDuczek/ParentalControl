@@ -23,8 +23,8 @@ export default class Direction extends React.Component {
     }
 
     goToChildComponent() {
-        const { email,  role, familyId } = this.state;
-        this.props.navigation.navigate("Child", { email, role, familyId });
+        const { email,  role } = this.state;
+        this.props.navigation.navigate("Child", { email, role });
     }
 
     componentDidMount() {
@@ -62,13 +62,11 @@ export default class Direction extends React.Component {
               })
         }
         else {
-            debugger;
             if (params.role === 'parent') {
-                debugger;
                 this.goToParentComponent(params.email, params.role, params.familyId);
             }
             if (params.role === 'child') {
-                this.goToChildComponent();
+                this.goToChildComponent(params.email, params.role);
             }
         }
     }

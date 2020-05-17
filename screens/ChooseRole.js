@@ -56,8 +56,8 @@ export default class ChooseRole extends React.Component {
                     }
                 })
                 .catch(errorMessage => {
-                    hasCanceled = true;
                     console.log(errorMessage);
+                    hasCanceled = true;
                 });
 
             if (firebase.auth().currentUser) {
@@ -66,11 +66,16 @@ export default class ChooseRole extends React.Component {
         }
     };
 
-    createId(email, name, surname) {
-        const a = email.charCodeAt(0);
-        const b = name.charCodeAt(1);
-        const c = surname.charCodeAt(2);
-        return Number(a+b+c);
+    createId(name, surname) {
+        const arrayWithNumbers = [];
+        const a = surname.split('');
+        a.forEach((char) => {
+            debugger;
+            arrayWithNumbers.push(char.charCodeAt(0));
+        });
+        arrayWithNumbers.push(name.charCodeAt(0));
+        debugger;
+        return Number(arrayWithNumbers.reduce((a, b) => a + b));
     }
 
     handleRegistration() {
@@ -80,8 +85,7 @@ export default class ChooseRole extends React.Component {
         if (this.state.role === 'parent') {
             const addParentRole = fc.httpsCallable('addParentRole');
             addParentRole({email: this.state.email})
-              .then((result) => {
-                  console.log(result);
+              .then(() => {
                   this.props.navigation
                     .navigate("Direction", {email, password, name, surname, errorMessage, role, familyId });
               });
@@ -90,8 +94,7 @@ export default class ChooseRole extends React.Component {
         if (this.state.role === 'child') {
             const addChildRole = fc.httpsCallable('addChildRole');
               addChildRole({email: this.state.email})
-                .then((result) => {
-                    console.log(result);
+                .then(() => {
                     this.props.navigation
                       .navigate("Direction", {email, password, name, surname, errorMessage, role });
                   });

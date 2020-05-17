@@ -11,6 +11,7 @@ export default class Functionalities extends React.Component {
             familyId: 0,
         };
         this.signOut = this.signOut.bind(this);
+        this.signId = this.signId.bind(this)
     }
 
     componentDidMount() {
@@ -30,6 +31,15 @@ export default class Functionalities extends React.Component {
         this.props.navigation.navigate("Auth", { logOut: true });
     };
 
+    signId() {
+        const fc = firebase.functions();
+        const addParentRole = fc.httpsCallable('addFamilyIdToParent');
+        addParentRole({email: this.state.email, familyId: this.state.familyId}).then(() => {
+            console.log("Great")
+        })
+        .catch(err => console.log(err))
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -38,7 +48,12 @@ export default class Functionalities extends React.Component {
                 <Text>
                     Aby móc korzystać z pełni funkcjonalności powiąż konto dziecka z id: {this.state.familyId}
                 </Text>
-                <Text>Odśwież</Text>
+                <TouchableOpacity style={styles.button}
+                                  onPress={this.signId}>
+                    <Text style={styles.inputTitle}>
+                        Powiąż
+                    </Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                                   onPress={this.signOut}>
                     <Text style={styles.inputTitle}>
@@ -65,5 +80,12 @@ const styles = StyleSheet.create({
         width: 120,
         alignItems: "center",
         textAlign: "center"
+    },
+    inputTitle: {
+        marginTop: 10,
+        color: "grey",
+        fontSize: 10,
+        fontWeight: "600",
+        textTransform: "uppercase",
     },
 });
