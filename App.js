@@ -2,14 +2,14 @@ import React from 'react';
 import * as firebase from 'firebase';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import LoadingScreen from './components/initialization/LoadingScreen';
 import LoginScreen from './components/form/LoginScreen';
+import LoadingScreen from './components/initialization/LoadingScreen';
 import RegisterScreen from './components/form/RegisterScreen';
-import ChooseRole from './components/form/ChooseRole';
+import Direction from './components/form/Direction';
 import Map from './components/common/Map';
+import ChooseRole from './components/form/ChooseRole';
 import Child from './components/modes/child/Main';
 import Parent from './components/modes/parent/Main';
-import Direction from './components/form/Direction';
 
 const firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
@@ -38,7 +38,7 @@ const AuthStack = createStackNavigator({
   Register: RegisterScreen,
 });
 
-createAppContainer(
+export default createAppContainer(
     createSwitchNavigator( {
       Loading: LoadingScreen,
       App: AppStack,
@@ -47,4 +47,4 @@ createAppContainer(
     {
       initialRouteName: "Loading",
     }),
-);
+)
