@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import * as firebase from 'firebase';
 
-export class Main extends React.Component {
+export default class Parent extends React.Component {
     constructor(props) {
         super(props);
         this.state = 	{

@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
-import * as firebase from "firebase";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import * as firebase from 'firebase';
 
-export default class Func extends React.Component {
+export default class Child extends React.Component {
     constructor(props) {
         super(props);
         this.state = 	{
