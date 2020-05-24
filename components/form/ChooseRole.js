@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Picker} from 'react-native';
-import * as firebase from "firebase";
+import {Picker, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import * as firebase from 'firebase';
 
 export default class ChooseRole extends React.Component {
     constructor(props) {
@@ -70,11 +70,9 @@ export default class ChooseRole extends React.Component {
         const arrayWithNumbers = [];
         const a = surname.split('');
         a.forEach((char) => {
-            debugger;
             arrayWithNumbers.push(char.charCodeAt(0));
         });
         arrayWithNumbers.push(name.charCodeAt(0));
-        debugger;
         return Number(arrayWithNumbers.reduce((a, b) => a + b));
     }
 
@@ -84,7 +82,7 @@ export default class ChooseRole extends React.Component {
 
         if (this.state.role === 'parent') {
             const addParentRole = fc.httpsCallable('addParentRole');
-            addParentRole({email: this.state.email})
+            addParentRole({email: this.state.email, familyId: this.state.familyId})
               .then(() => {
                   this.props.navigation
                     .navigate("Direction", {email, password, name, surname, errorMessage, role, familyId });

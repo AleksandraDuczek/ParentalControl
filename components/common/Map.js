@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import * as firebase from "firebase";
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import * as firebase from 'firebase';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
@@ -43,7 +43,7 @@ export default class Map extends React.Component {
         }
     }
 
-    getFuckingMarkers() {
+    getMarkers() {
         if (this.state.latitude && this.state.longitude) {
             return {
                     latitude: this.state.latitude,
@@ -64,7 +64,7 @@ export default class Map extends React.Component {
             <View style={styles.container}>
                 <MapView style={styles.map}
                          initialRegion={this.getInitialRegions()}>
-                    <MapView.Marker coordinate={this.getFuckingMarkers()}>
+                    <MapView.Marker coordinate={this.getMarkers()}>
                     </MapView.Marker>
                 </MapView>
 

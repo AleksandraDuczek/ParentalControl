@@ -58,6 +58,7 @@ exports.addParentRole = functions.https.onCall((data) => {
     return admin.auth().getUserByEmail(data.email).then(user => {
         return admin.auth().setCustomUserClaims(user.uid, {
             parent: true,
+            familyId: data.familyId,
         });
     }).then(() => {
         return {

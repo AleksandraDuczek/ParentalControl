@@ -1,17 +1,13 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import { createStackNavigator } from 'react-navigation-stack';
-import {
-    createAppContainer, createSwitchNavigator
-} from 'react-navigation';
-import LoginScreen from './screens/LoginScreen';
-import LoadingScreen from './screens/LoadingScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import Direction from './screens/Direction';
-import Map from './screens/Map';
-import Functionalities from './roles/parent/Functionalities';
-import Func from './roles/child/Func';
-import ChooseRole from './screens/ChooseRole';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import LoadingScreen from './components/initialization/LoadingScreen';
+import LoginScreen from './components/form/LoginScreen';
+import RegisterScreen from './components/form/RegisterScreen';
+import ChooseRole from './components/form/ChooseRole';
+import {Main as Child, Main as Parent} from './components/modes/child/Main';
+import Direction from './components/form/Direction';
 
 const firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
@@ -29,8 +25,8 @@ firebase.initializeApp(firebaseConfig);
 
 const AppStack = createStackNavigator({
     Direction: Direction,
-    Parent: Functionalities,
-    Child: Func,
+    Parent: Parent,
+    Child: Child,
     Map: Map,
 });
 
