@@ -9,7 +9,7 @@ import Direction from './components/form/Direction';
 import Map from './components/common/Map';
 import ChooseRole from './components/form/ChooseRole';
 import Child from './components/modes/child/Main';
-import Parent from './components/modes/parent/Main';
+import Parent from './components/modes/Common';
 
 const firebaseConfig = {
   apiKey: "AIzaSyATw0xOUTJ2dr8BS0CW7rUQp1HfawicuUA",
@@ -23,7 +23,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const AppStack = createStackNavigator({
     Direction: Direction,

@@ -35,7 +35,6 @@ export default class Parent extends React.Component {
         const fc = firebase.functions();
         const addParentRole = fc.httpsCallable('addFamilyIdToParent');
         addParentRole({email: this.state.email, familyId: this.state.familyId}).then(() => {
-            console.log("Great")
         })
         .catch(err => console.log(err))
     };

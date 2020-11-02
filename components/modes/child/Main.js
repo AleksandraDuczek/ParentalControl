@@ -1,64 +1,79 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import * as firebase from 'firebase';
+import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
+import MapView from "react-native-maps";
 
 export default class Child extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = 	{
-            email: "",
-            role: "",
-            familyId: 0,
-        };
-        this.signOut = this.signOut.bind(this);
-        this.checkId = this.checkId.bind(this);
-    }
-
-    componentDidMount() {
-        const params = this.props.navigation.state.params;
-        if (params) {
-            this.setState({
-                email: params.email,
-                role: params.role,
-            });
-        }
-        const { email } = firebase.auth().currentUser;
-        this.setState({ email });
+    state = {
+        location: {},
+        latitude: 0,
+        longitude: 0,
     };
 
-    checkId() {
-        console.log(this.state.familyId);
-        // check id in data base
+    componentWillMount() {
+        this._getLocation();
+        this.getInitialRegions();
     }
 
-    signOut() {
-        this.props.navigation.navigate("Auth", { logOut: true });
+    _getLocation = async () => {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+        if (status !== 'granted') {
+            this.setState({
+                errorMessage: "Permission not granted"
+            })
+        }
+
+        const userLocation = await Location.getCurrentPositionAsync()
+          .then((response) =>
+            this.setState({ latitude: response.coords.latitude,
+                longitude: response.coords.longitude}));
+    };
+
+    getInitialRegions() {
+        if (this.state.latitude && this.state.longitude) {
+            return {
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            }
+        }
+    }
+
+    getMarkers() {
+        if (this.state.latitude && this.state.longitude) {
+            return {
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+            }
+        } return {latitude: 0, longitude: 0}
+    }
+
+    signOut = () => {
+        firebase.auth().signOut()
+          .then(() => {
+              console.log("Signed out")
+          });
     };
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Rola: {this.state.role}</Text>
-                <Text>Email: {this.state.email}</Text>
-                <Text> Wpisz ID rodzica: </Text>
-                <TextInput style={styles.input}
-                           autoCapitalize="none"
-                           onChangeText={familyId => this.setState({familyId})}
-                           value={this.state.familyId}>
-                </TextInput>
-                <TouchableOpacity style={styles.button}
-                                  onPress={this.checkId}>
-                    <Text style={styles.inputTitle}>
-                        Przypisz id
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                                  onPress={this.signOut}>
-                    <Text style={styles.inputTitle}>
-                        Wyloguj
-                    </Text>
-                </TouchableOpacity>
-            </View>
+          <View style={styles.container}>
+              <MapView style={styles.map}
+                       initialRegion={this.getInitialRegions()}>
+                  <MapView.Marker coordinate={this.getMarkers()}>
+                  </MapView.Marker>
+              </MapView>
+
+              <TouchableOpacity style={styles.button}
+                                onPress={this.signOut}>
+                  <Text style={styles.inputTitle}>Wyloguj</Text>
+              </TouchableOpacity>
+
+          </View>
         );
     }
 }
@@ -85,5 +100,12 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: "600",
         textTransform: "uppercase",
+    },
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
 });
